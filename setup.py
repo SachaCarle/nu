@@ -21,5 +21,5 @@ setup(
     data_files=df,
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Flask', 'behave', 'requests', 'wheel']
+    install_requires=['Flask', 'flask_script', 'behave', 'requests', 'wheel']
 )

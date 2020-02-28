@@ -9,7 +9,19 @@
 </head>
 
 <body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <button onclick="killme()"> KILL </button>
     <h1>$name</h1>
 </body>
+
+<script>
+    function killme() {
+        axios.get('/kill').then(function(r) {
+            console.log('Entity not killed ?')
+        }).catch(function(r) {
+            console.log('Entity killed ?', r)
+        })
+    }
+</script>
 
 </html>
