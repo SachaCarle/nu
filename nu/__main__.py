@@ -3,8 +3,10 @@ from . import _, cmds
 
 parser = argparse.ArgumentParser()
 parser.add_argument('cmd', help="test create")
-parser.add_argument('-v', help='Print nu log', action='store_true')
-parser.add_argument('-o', help='oupout on the system, a path', action='store')
+parser.add_argument('-v', help='log', action='store_true')
+parser.add_argument('-o', help='output', default=False)
+parser.add_argument('-p', help='port', default=5000)
+parser.add_argument('-e', help='entity', default='http://localhost:5000/')
 
 
 args = parser.parse_args()
