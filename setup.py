@@ -8,6 +8,9 @@ def globit(st, nd):
 df = [
         ('_', globit('nu/_/', '*.py')),
         ('cmds', globit('nu/cmds/', '*.py')),
+        ('abstract', globit('nu/abstract/', '*.py')),
+        ('abstract', globit('nu/abstract/', '*.html')),
+        ('entity', globit('nu/entity/', '*.py')),
     ]
 
 setup(

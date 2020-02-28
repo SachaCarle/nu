@@ -1,5 +1,9 @@
 import collections
 
+class NuException(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args)
+
 class NuObject(collections.MutableMapping):
 
     def __init__(self, *args, **kwargs):
@@ -10,7 +14,7 @@ class NuObject(collections.MutableMapping):
         if key == "store":
             return object.__getattribute__(self, key)
         if not (self.__keytransform__(key) in self.store.keys()):
-            raise Exception('ZLUB')
+            raise NuException('KeyNotFound', key)
         return self.store[self.__keytransform__(key)]
 
     def __setattr__(self, key, value):
