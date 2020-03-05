@@ -1,5 +1,5 @@
 import argparse
-from . import _, cmds
+from . import _, cmds, nupath
 
 parser = argparse.ArgumentParser()
 parser.add_argument('cmd', help="test create")
@@ -11,11 +11,11 @@ parser.add_argument('-e', help='entity', default='http://localhost:5000/')
 
 args = parser.parse_args()
 nutools = _.create(args)
-nutools.logger(args)
+nutools.logger(args, nupath)
 
 module = getattr(cmds, args.cmd)
 
 #TODO: MAKE RAISER
 if not module: raise Exception()
 
-module.cmd(nutools, args)
+module.cmd(nutools, args, nupath=nupath)

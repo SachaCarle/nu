@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from ..meta import obj
 from .body import bodyset, show
-from .head import serve
+from .head import serve, awake
 
 def think(e):
     def _think(*args, **kwargs):
@@ -17,6 +17,7 @@ def infuse(entity):
         'file': Path('body.html'),
         'set': bodyset(e),
         'show': show(e),
-        'serve': serve(e),
     })
+    e.serve = serve(e)
+    e.awake = awake(e)
     return e

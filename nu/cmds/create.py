@@ -8,7 +8,7 @@ def pythoncode():
     code = mindpath.read_text()
     return code
 
-def cmd(_, args, legacy=True):
+def cmd(_, args, legacy=True, **kwargs):
     name = args.o
     entity_name = os.path.split(args.o)[1]
     assert name
@@ -23,7 +23,6 @@ def cmd(_, args, legacy=True):
         mindfile = Path(os.path.join(folder_path, 'mind.py'))
         with mindfile.open('w', ) as mind:
             mind.write(pythoncode())
-        subprocess.run(["python", str(mindfile)], cwd=str(folder_path))
     except Exception as e:
         if legacy:
             shutil.rmtree(folder_path)
