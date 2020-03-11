@@ -7,6 +7,7 @@ parser.add_argument('-v', help='log', action='store_true')
 parser.add_argument('-o', help='output', default=False)
 parser.add_argument('-p', help='port', default=5000)
 parser.add_argument('-e', help='entity', default='http://localhost:5000/')
+parser.add_argument('target', help='target', nargs='?', default=False)
 
 
 args = parser.parse_args()

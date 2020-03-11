@@ -17,11 +17,11 @@ def cmd(_, args, legacy=True, **kwargs):
         folder_path.mkdir()
         _.logger('creating at ', folder_path)
         entityfile = Path(os.path.join(folder_path, 'entity.json'))
-        with entityfile.open('w', ) as entity:
+        with entityfile.open('w') as entity:
             entity.write(json.dumps({'name': entity_name}))
 
         mindfile = Path(os.path.join(folder_path, 'mind.py'))
-        with mindfile.open('w', ) as mind:
+        with mindfile.open('w') as mind:
             mind.write(pythoncode())
     except Exception as e:
         if legacy:
