@@ -11,13 +11,14 @@ df = [
         ('abstract', globit('nu/abstract/', '*.py')),
         ('abstract', globit('nu/abstract/', '*.html')),
         ('entity', globit('nu/entity/', '*.py')),
+        ('js', globit('nujs/js/', '*.js')),
     ]
 
 setup(
     name='Nu',
     version='1.0.1',
     long_description=__doc__,
-    packages=['nu', 'nuthon'],
+    packages=['nu', 'nuthon', 'nujs'],
     data_files=df,
     include_package_data=True,
     zip_safe=False,
