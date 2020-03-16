@@ -143,7 +143,12 @@ function tokenizer(str, tokens = default_tokens) {
     return ts;
 }
 
-export {
-    tokenizer,
-    default_tokens
+function listen(chunk) {
+    if (!chunk) {
+        return
+    }
+    res = tokenizer(chunk)
+    console.log(JSON.stringify(res))
 }
+
+module.exports = listen
