@@ -25,6 +25,7 @@ from .env import ExecuteJs
 
 if stdin:
     stdin = stdin.read_bytes()
+
 js = ExecuteJs(fd=args.target, stdin=stdin)
 
 

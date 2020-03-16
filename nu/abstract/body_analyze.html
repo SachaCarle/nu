@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>$name</title>
+</head>
+
+<body>
+    <!--Load Vue-->
+    <script src="https://unpkg.com/vue"></script>
+    <!--Load the web component polyfill-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.2.0/webcomponents-loader.js"></script>
+    <!--Load your custom element-->
+    <script src="http://127.0.0.1:5000/components/nu-trine.js"></script>
+    <!--Use your custom element-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <button onclick="killme()"> KILL </button>
+    <h1>$name</h1>
+    <nu-trine></nu-trine>
+</body>
+
+<script>
+    function killme() {
+        axios.get('/kill').then(function(r) {
+            console.log('Entity not killed ?')
+        }).catch(function(r) {
+            console.log('Entity killed ?', r)
+        })
+    }
+</script>
+
+</html>

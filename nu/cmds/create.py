@@ -9,6 +9,7 @@ def pythoncode():
     return code
 
 def cmd(_, args, legacy=True, **kwargs):
+    assert args.o
     name = args.o
     entity_name = os.path.split(args.o)[1]
     assert name
@@ -18,7 +19,7 @@ def cmd(_, args, legacy=True, **kwargs):
         _.logger('creating at ', folder_path)
         entityfile = Path(os.path.join(folder_path, 'entity.json'))
         with entityfile.open('w') as entity:
-            entity.write(json.dumps({'name': entity_name}))
+            entity.write(json.dumps({'name': entity_name, 'default_body': 'body.html'}))
 
         mindfile = Path(os.path.join(folder_path, 'mind.py'))
         with mindfile.open('w') as mind:
