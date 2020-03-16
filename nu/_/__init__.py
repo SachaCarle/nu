@@ -10,5 +10,5 @@ def create(args):
     return obj(module)
 
 all = [
-    "create"
+    "create",
 ]

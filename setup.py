@@ -17,7 +17,7 @@ setup(
     name='Nu',
     version='1.0.1',
     long_description=__doc__,
-    packages=['nu'],
+    packages=['nu', 'nuthon'],
     data_files=df,
     include_package_data=True,
     zip_safe=False,

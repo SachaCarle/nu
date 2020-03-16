@@ -22,11 +22,11 @@ def cmd(_, args, **kwargs):
         code = _.parser(args.target)
         if args.o == False:
             print ('__FINISHED__\n\n\n\n')
-            #pp.pprint (code('python'))
+            #pp.pprint (code())
             print_code(code)
         else:
             with Path(args.o).open('w') as output:
-                output.write(code('python'))
+                output.write(code())
         # args.o for output
     except Exception as e:
         raise e
