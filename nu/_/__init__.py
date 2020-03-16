@@ -1,7 +1,7 @@
-from . import logger, raiser, parser
+from . import logger, raiser
 from ..meta import obj
 
-ls = ["logger", "raiser", "parser"]
+ls = ["logger", "raiser"]
 
 def create(args):
     module = {

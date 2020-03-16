@@ -1,5 +1,5 @@
 from pathlib import Path
-from .nuthon import ScopeItem, IndentationFeedback, GrammarExt
+from . import ScopeItem, IndentationFeedback, GrammarExt
 import ast, pprint
 
 

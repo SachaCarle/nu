@@ -1,7 +1,7 @@
 #TODO: on demand loader
 
-from . import test, create, serve
+from . import create, serve
 
 all = [
-    "test", "create", "serve"
+    "create", "serve"
 ]
