@@ -29,7 +29,6 @@ def cmd(_, args, legacy=True, **kwargs):
         with mindfile.open('w') as mind:
             mind.write(pythoncode())
     except Exception as e:
-        print(e)
         if legacy:
             shutil.rmtree(folder_path)
             _.logger('cleaned ', folder_path)

@@ -1,4 +1,5 @@
 import sys, os, json
+from flask import send_file
 from pathlib import Path
 
 def jsonoperate(loc):
@@ -24,8 +25,7 @@ def remember(e):
         for c in e.components.data:
             @e.head.define('/components/<path:p>')
             def __component_handler__(p):
-                print ("HEYEYHE", p)
-                print ('\t also ', c)
-                return 'HELO'
+                e.think('Requested component: ' + p + '\n\treturning file ' + str(Path(os.path.join(e.location, p)).resolve()) )
+                return send_file(str(os.path.join(e.location, p)), mimetype='application')
         return e
     return _remember
