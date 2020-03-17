@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, send_file, request
 from flask_script import Manager
 from pathlib import Path
-import sys, os, subprocess, nu
+import sys, os, nu
 
 def pythoncode(nupath='', **kwargs):
     mindpath = Path('mind.py')
@@ -13,14 +13,28 @@ def awake(e):
         mind = pythoncode()
         globs = {
                     'nu': nu,
-                    'me': nu.entity.spirit('entity.json')
+                    'me': e
                 }
         exec(mind, globs)
     return _awake
 
+def define(e):
+    def _define_creator(path, **ks_p):
+        def _define_route(fun):
+            def _register_route(app):
+                print ('Hello there', e, path, fun, app)
+                app.route(path, **ks_p)(fun)
+            e.head.routes[path] = _register_route
+        return _define_route
+    return _define_creator
+
 def serve(e):
     def _serve():
         app = Flask(__name__)
+
+        for path, fun in e.head.routes.items():
+            fun(app)
+            print ('HEYYE', path)
 
         @app.route('/')
         def body():
@@ -32,9 +46,9 @@ def serve(e):
                 raise RuntimeError('Not running with the Werkzeug Server')
             func()
 
-        @app.route('/<path:p>')
-        def index_js(p):
-            return send_file(str(os.path.join(e.location, p)), mimetype='application')
+#        @app.route('/<path:p>')
+#        def index_js(p):
+#            return send_file(str(os.path.join(e.location, p)), mimetype='application')
 
         return app
     return _serve

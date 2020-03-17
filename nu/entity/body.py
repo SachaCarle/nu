@@ -10,5 +10,5 @@ def bodyset(e):
 
 def show(e):
     def _instanciate():
-        webbrowser.open('http://localhost:5000/' + str(e.body.file))
+        webbrowser.open(e.http + str(e.body.file))
     return _instanciate
