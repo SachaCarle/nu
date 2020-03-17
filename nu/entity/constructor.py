@@ -14,10 +14,10 @@ def think(e):
 def infuse(entity):
     e = obj(entity)
     e.http = 'http://localhost:5000/'
-    e.location = Path(os.curdir).resolve()
+    e.location = Path(os.path.join(os.curdir, '.entity')).resolve()
     e.think = think(e)
     e.body = obj({
-        'file': Path('body.html'),
+        'file': Path(os.path.join(e.location, 'body.html')).resolve(),
         'set': bodyset(e),
         'show': show(e),
     })

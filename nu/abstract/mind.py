@@ -1,1 +1,1 @@
-me.think(nu.nupath)
+me.think(me.location)

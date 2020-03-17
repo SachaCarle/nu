@@ -3,14 +3,14 @@ from flask_script import Manager
 from pathlib import Path
 import sys, os, nu, json
 
-def pythoncode(nupath='', **kwargs):
-    mindpath = Path('mind.py')
+def pythoncode(e):
+    mindpath = Path(os.path.join(e.location, 'mind.py'))
     code = mindpath.read_text()
     return code
 
 def awake(e):
     def _awake():
-        mind = pythoncode()
+        mind = pythoncode(e)
         globs = {
                     'nu': nu,
                     'me': e

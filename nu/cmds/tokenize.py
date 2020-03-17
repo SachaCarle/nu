@@ -12,7 +12,7 @@ def cmd(_, args, legacy=True, **kwargs):
     js = ExecuteJs(fd=tokenizer, stdin=code)
     #print (js.result)
     subprocess.run(["python", "-m", "nu", "create", "-o", args.o])
-    codedatafile = Path(os.path.join(output, 'entity.json')).resolve()
+    codedatafile = Path(os.path.join(output, '.entity', 'entity.json')).resolve()
     entity = nu.entity.spirit(codedatafile)
     entity.components.add('trine')
     @entity.memory.alter
