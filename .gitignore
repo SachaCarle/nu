@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 node_modules/
+
+nu/components/vue_components/src/tmp/

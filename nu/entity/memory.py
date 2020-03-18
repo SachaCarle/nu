@@ -13,7 +13,6 @@ def jsonoperate(loc):
         os.remove(loc)
         with loc.open('w') as fd:
             json.dump(d, fd)
-        print ('GOT', loc.read_text())
     return _jsonoperate
 
 def alter(e):
