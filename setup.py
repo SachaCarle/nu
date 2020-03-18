@@ -1,17 +1,18 @@
 from setuptools import setup
 from pathlib import Path
-
 def globit(st, nd):
     bl = Path(st).glob(nd)
     return [str(b) for b in sorted(bl)]
 
 df = [
-        ('_', globit('nu/_/', '*.py')),
-        ('cmds', globit('nu/cmds/', '*.py')),
-        ('abstract', globit('nu/abstract/', '*.py')),
-        ('abstract', globit('nu/abstract/', '*.html')),
-        ('entity', globit('nu/entity/', '*.py')),
-        ('js', globit('nujs/js/', '*.js')),
+        ('nu/_', globit('nu/_/', '*.py')),
+        ('nu/cmds', globit('nu/cmds/', '*.py')),
+        ('nu/abstract', globit('nu/abstract/', '*.py')),
+        ('nu/abstract', globit('nu/abstract/', '*.html')),
+        ('nu/components', globit('nu/components/', '*.py')),
+        ('nu/components/src', globit('nu/components/src', '*.vue')),
+        ('nu/entity', globit('nu/entity/', '*.py')),
+        ('nujs/js', globit('nujs/js/', '*.js')),
     ]
 
 setup(

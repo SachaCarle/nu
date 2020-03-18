@@ -14,7 +14,7 @@ def cmd(_, args, legacy=True, **kwargs):
     subprocess.run(["python", "-m", "nu", "create", "-o", args.o])
     codedatafile = Path(os.path.join(output, '.entity', 'entity.json')).resolve()
     entity = nu.entity.spirit(codedatafile)
-    entity.components.add('trine')
+    nu.components.copy('token-visual', entity)
     @entity.memory.alter
     def __code__(data):
         data['default_body'] = 'body_analyze.html'
