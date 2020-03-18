@@ -1,9 +1,16 @@
 from string import Template
-import webbrowser
+import webbrowser, json
+
+def opt(e):
+    d = {}
+    if 'analyze' in e:
+        d['analyze_tokens'] = json.dumps(e.analyze['tokens'])
+    return d
 
 def bodyset(e):
     def _set(txt):
-        txt = Template(txt).safe_substitute(**e)
+        adding = opt(e)
+        txt = Template(txt).safe_substitute(**e, **adding)
         e.body.file.touch()
         e.body.file.write_text(txt)
     return _set

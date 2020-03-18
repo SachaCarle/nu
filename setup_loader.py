@@ -3,11 +3,6 @@ from pathlib import Path
 from os import environ
 import os, sys, subprocess
 
-def globit(st, nd):
-    bl = Path(st).glob(nd)
-    return [str(b) for b in sorted(bl)]
-
-
 basedir = str(Path('/', 'nusys').resolve())
 pdir = Path(basedir, 'lib', 'python')
 npf = Path('.', 'nuloader', 'nupath.py').resolve()

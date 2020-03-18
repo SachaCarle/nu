@@ -1,6 +1,6 @@
 from nujs import ExecuteJs, scripts
 from pathlib import Path
-import sys, os, subprocess, json, nu
+import sys, os, subprocess, json, nu, nujs
 
 def cmd(_, args, legacy=True, **kwargs):
     assert args.i
@@ -15,8 +15,11 @@ def cmd(_, args, legacy=True, **kwargs):
     codedatafile = Path(os.path.join(output, '.entity', 'entity.json')).resolve()
     entity = nu.entity.spirit(codedatafile)
     nu.components.copy('token-visual', entity)
+    with Path(entity.location, 'js_tokenizer.js').open('w') as fd:
+        fd.write(Path(nujs.scripts['js_tokenizer']).read_text())
     @entity.memory.alter
     def __code__(data):
+        data['components']['data'].append('token-visual')
         data['default_body'] = 'body_analyze.html'
         data['analyze'] = {
             'tokens': js.result
