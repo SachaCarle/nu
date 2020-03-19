@@ -77,6 +77,7 @@ function tokenizer_comments(ts, str, i, tokens) {
 */
 
 function tokenizer(str, tokens = default_tokens) {
+    console.error("Tokeniz! ", str)
     let ts = [];
     let i = 0;
     while (i < str.length) {
@@ -149,6 +150,7 @@ function listen(chunk) {
     }
     res = tokenizer(chunk)
     console.log(JSON.stringify(res))
+    return res
 }
 
 module.exports = listen

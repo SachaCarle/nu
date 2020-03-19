@@ -4,7 +4,8 @@ import webbrowser, json
 def opt(e):
     d = {}
     if 'analyze' in e:
-        d['analyze_tokens'] = json.dumps(e.analyze['tokens'])
+        #d['analyze_tokens'] = json.dumps(e.analyze['tokens']).replace('\\"', "'").replace("\\r", "__backslash__r").replace("\\n", "__backslash__n")
+        d['analyze_tokens'] = str(e.analyze['tokens'])
     return d
 
 def bodyset(e):

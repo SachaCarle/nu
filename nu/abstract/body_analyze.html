@@ -5,25 +5,39 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- Add this to <head> -->
+
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+    <!--Load the web component polyfill-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.2.0/webcomponents-loader.js"></script>
+
+    <!--Load your custom element-->
+    <!-- $components -->
+    <script src="http://127.0.0.1:5000/components/token-visual.js"></script>
+    <script src="http://127.0.0.1:5000/components/nu-call.js"></script>
+    <script src="http://127.0.0.1:5000/components/js_tokenizer.js"></script>
+    <!--Use your custom element-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>$name</title>
 </head>
 
 <body>
-    <!--Load Vue-->
-    <script src="https://unpkg.com/vue"></script>
-    <!--Load the web component polyfill-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.2.0/webcomponents-loader.js"></script>
-    <!--Load your custom element-->
-    <!-- $components -->
-    <script src="http://127.0.0.1:5000/components/token-visual.js"></script>
-    <!--Use your custom element-->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <button onclick="killme()"> KILL </button>
     <h1>$name</h1>
+    <nu-call></nu-call>
+    <script>
+        var tks = $analyze_tokens
+    </script>
+    <token-visual ob="tks" tokenizer="tokenizer"></token-visual>
     <p>
         $analyze_tokens
     </p>
-    <token-visual></token-visual>
 </body>
 
 <script>
@@ -34,6 +48,8 @@
             console.log('Entity killed ?', r)
         })
     }
+    console.log("object to tokenize ?", tks)
+    console.log("tokenizer?", tokenizer)
 </script>
 
 </html>

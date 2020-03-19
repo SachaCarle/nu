@@ -17,3 +17,4 @@ for fl in [_ for _ in cp_list if _ not in ["App.vue"]]:
     print (' '.join(cmd))
     subprocess.Popen(cmd, shell=True).wait()
     shutil.move(str(Path('tmp', fl.replace('.vue', '.js'))), cp_dir)
+    shutil.move(str(Path('tmp', fl.replace('.vue', '.js.map'))), cp_dir)

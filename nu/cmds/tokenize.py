@@ -15,11 +15,14 @@ def cmd(_, args, legacy=True, **kwargs):
     codedatafile = Path(os.path.join(output, '.entity', 'entity.json')).resolve()
     entity = nu.entity.spirit(codedatafile)
     nu.components.copy('token-visual', entity)
+    nu.components.copy('nu-call', entity)
     with Path(entity.location, 'js_tokenizer.js').open('w') as fd:
         fd.write(Path(nujs.scripts['js_tokenizer']).read_text())
     @entity.memory.alter
     def __code__(data):
-        data['components']['data'].append('token-visual')
+        data['components']['data'].extend([
+            'token-visual', 'nu-call'
+            ])
         data['default_body'] = 'body_analyze.html'
         data['analyze'] = {
             'tokens': js.result
