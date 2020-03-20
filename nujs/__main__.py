@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse
 
 #Assert babel installation
-subprocess.run(["npm", "install", ], shell=True)
+subprocess.run(["npm", "install", 'vue'])#, shell=True)
 # Done
 
 parser = argparse.ArgumentParser()
@@ -30,14 +30,15 @@ js = ExecuteJs(fd=args.target, stdin=stdin)
 
 
 if isinstance(js.result, Exception):
-    print (js.body)
+    print ('?', js.body)
     raise js.result
 else:
     if not stdout:
-        print (js.result)
+        print ('?', js.result)
 
 
 if stdout:
     with stdout.open('w') as fd:
         for it in js.result:
-            fd.write(json.dumps(it))
+            if it != None:
+                fd.write(json.dumps(it))

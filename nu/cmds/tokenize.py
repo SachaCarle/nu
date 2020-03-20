@@ -10,7 +10,6 @@ def cmd(_, args, legacy=True, **kwargs):
     code = Path(os.path.join(Path('.').resolve(), Path(args.i))).read_bytes()
     output = Path(os.path.join(Path('.').resolve(), Path(args.o + '.nu')));
     js = ExecuteJs(fd=tokenizer, stdin=code)
-    #print (js.result)
     subprocess.run(["python", "-m", "nu", "create", "-o", args.o])
     codedatafile = Path(os.path.join(output, '.entity', 'entity.json')).resolve()
     entity = nu.entity.spirit(codedatafile)

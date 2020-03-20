@@ -10,7 +10,8 @@ def pythoncode():
 
 def cmd(_, args, legacy=True, **kwargs):
     default_attr = {
-        'components': {'data':[]}
+        'components': {'data':[]},
+        'state': '0',
     }
     assert args.o
     name = args.o
@@ -18,11 +19,15 @@ def cmd(_, args, legacy=True, **kwargs):
     assert name
     entity_path = Path(name + '.nu').resolve()
     folder_path = Path(os.path.join(name + '.nu', '.entity')).resolve()
+    if len(nu.drives) > 0:
+        default_attr['root'] = Path('.').resolve().parts[0][0]
     try:
         folder_path.mkdir(parents=True, exist_ok=True)
         _.logger('creating at ', folder_path)
         entityfile = Path(os.path.join(folder_path, 'entity.json')).resolve()
-        tx = json.dumps({'name': entity_name, 'home': str(folder_path), 'default_body': 'body.html', **default_attr})
+        tx = json.dumps({'name': entity_name,
+            'home': str(folder_path), 'default_body': 'body.html',
+            **default_attr})
         with entityfile.open('w') as entity:
             entity.write(tx)
 

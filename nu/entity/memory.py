@@ -10,13 +10,15 @@ def jsonoperate(loc):
             d = json.loads(loc.read_text())
             assert d, "empty data ?" + str(d)
         d = fun(d)
+        assert isinstance(d, dict), "Please return data from @e.memory.alter !!!"
+        assert not (d in [None, 'null', '{}', {}, False, True])
         os.remove(loc)
         with loc.open('w') as fd:
             json.dump(d, fd)
     return _jsonoperate
 
 def alter(e):
-    return jsonoperate(os.path.join(e.home, 'entity.json'))
+    return jsonoperate(os.path.join(e.location, 'entity.json'))
 
 def remember(e):
     def _remember(app):

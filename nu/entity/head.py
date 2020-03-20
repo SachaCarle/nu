@@ -4,7 +4,7 @@ from pathlib import Path
 import sys, os, nu, json
 
 def pythoncode(e):
-    mindpath = Path(os.path.join(e.location, 'mind.py'))
+    mindpath = Path(os.path.join(e.location, 'mind.py')).resolve()
     code = mindpath.read_text()
     return code
 

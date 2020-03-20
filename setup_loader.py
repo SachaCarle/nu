@@ -37,12 +37,12 @@ except Exception as e:
     raise e
 
 environ['PYTHONPATH'] = ""
-subprocess.Popen(["python", '-m', 'nu', 'install_clean'], shell=True, cwd=str(Path.home())).wait()
+subprocess.Popen(["python", '-m', 'nu', 'install_clean'], cwd=str(Path.home())).wait()
 environ['PYTHONPATH'] = str(pdir)
-subprocess.Popen(["python", '-m', 'nu', 'install_clean'], shell=True, cwd=str(Path.home())).wait()
+subprocess.Popen(["python", '-m', 'nu', 'install_clean'], cwd=str(Path.home())).wait()
 
-print(
+print( '?',
     Path('nu/components/src').resolve()
 )
 
-subprocess.Popen(["python", 'build.nu.py'], cwd='nu/components/vue_components/src').wait()
+#subprocess.Popen(["python", 'build.nu.py'], cwd='nu/components/vue_components/src').wait()
