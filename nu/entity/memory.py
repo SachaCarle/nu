@@ -22,6 +22,7 @@ def alter(e):
 
 def remember(e):
     def _remember(app):
+        e.think('What am I ?', list(e.keys()))
         e.think ('Where I am ?..\t' + str(e.location))
         e.think ('I remember now... ' + str(e.components.data))
         for c in e.components.data:

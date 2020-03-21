@@ -10,14 +10,22 @@ def move(e):
         nl = dady[1]
         dady = dady[0]
         b = Path(loc, nl).resolve()
-        a = Path(folder).resolve()
-        #
-        #e.think('I am moving: ' + str(a) + ' ==> ' + str(b))
-        #e.think('awaken at ', str(b), ' and remove ', str(a))
-        nu.moved(e, b)
-        entity.think('dying...')
-        exit()
+        nu.moved(e, b) # CODE END
     return _move
+
+def duplicate(e):
+    def _dupl():
+        folder = os.path.split(e.location)
+        folder = folder[0]
+        dady = os.path.split(folder)
+        nl = dady[1]
+        dady = dady[0]
+        b = Path(dady, nl, nl).resolve()
+        try:
+            nu.duplicate(e, b)
+        except Exception as er:
+            e.think("I can't create a clone, ", str(er).encode('ascii', 'replace'))
+    return _dupl
 
 def opt(e):
     d = {}

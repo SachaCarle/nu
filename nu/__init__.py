@@ -1,5 +1,5 @@
 from . import _, cmds, meta, entity, components
-from .moved import moved
+from .moved import moved, duplicate
 from .faith import workship
 from pathlib import Path
 import os.path

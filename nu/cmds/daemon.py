@@ -14,7 +14,10 @@ def entity_script(entity_path, *debug):
     #aprint ("#--\t", entity_path + ":")
     text = []
     for line in p.stdout:
-        line = line.decode('ascii')
+        try:
+            line = line.decode('ascii')
+        except Exception as e:
+            print ("<!>\tAn error occured decoding: '{}': {}".format(line, e))
         chks = line.split(':')
         #aprint(chks[0] + '.nu', " >>> ", line.replace('\r', '').replace('\n', ''))
         if chks[0] + '.nu' == entity_path:

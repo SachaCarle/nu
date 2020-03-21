@@ -5,6 +5,10 @@ class NuException(Exception):
         Exception.__init__(self, *args)
 
 class NuObject(collections.MutableMapping):
+    def __str__(self):
+        return dict.__str__(self.store)
+    def __repr__(self):
+        return f"""<{dict.__repr__(self.store)}>"""
 
     def __init__(self, *args, **kwargs):
         self.store = dict()
