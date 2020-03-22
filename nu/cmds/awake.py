@@ -6,7 +6,7 @@ def pythoncode(nupath='', **kwargs):
     code = mindpath.read_text()
     return code
 
-def cmd(_, args, **kwargs):
+def awaken():
         try:
                 spiritpath = Path(os.path.join('.entity', 'entity.json')).resolve()
                 #print ('awakening', spiritpath)
@@ -17,3 +17,7 @@ def cmd(_, args, **kwargs):
         else:
                 me.think('A soft awakening, hello world !', os.getcwd())
                 me.awake()
+                return me
+
+def cmd(_, args, **kwargs):
+       return awaken()

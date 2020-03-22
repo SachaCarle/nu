@@ -22,9 +22,10 @@ def duplicate(e):
         dady = dady[0]
         b = Path(dady, nl, nl).resolve()
         try:
-            nu.duplicate(e, b)
+            return nu.duplicate(e, b)
         except Exception as er:
             e.think("I can't create a clone, ", str(er).encode('ascii', 'replace'))
+            return None
     return _dupl
 
 def opt(e):

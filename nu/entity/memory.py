@@ -1,4 +1,4 @@
-import sys, os, json
+import sys, os, json, nuthon
 from flask import send_file
 from pathlib import Path
 
@@ -28,7 +28,21 @@ def remember(e):
         for c in e.components.data:
             @e.head.define('/components/<path:p>')
             def __component_handler__(p):
-                e.think('Requested component: ' + p + '\n\treturning file ' + str(Path(os.path.join(e.location, p)).resolve()) )
+                e.think('Maybe I should this routes only for ' + str(c))
+                e.think('Requested component: ' + p + '\n\treturning file ' + str(Path(os.path.join(e.location, p)).resolve()))
                 return send_file(str(os.path.join(e.location, p)), mimetype='application')
         return e
     return _remember
+
+def load(e):
+    def _load(path):
+        p = Path(os.path.split(e.location)[0], path).resolve()
+        e.think('loading ', p)
+        tx = p.read_text()
+        e.think('loaded: ', tx)
+        tn = nuthon.template(tx)
+        e.think('nuthon templated: ', tn.replace('\n', '\\n'))
+        result = nuthon.execute(tn, {'e': e})
+        e.think(result.replace('\n', '\\n'))
+        exec(result)
+    return _load

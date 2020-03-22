@@ -4,7 +4,7 @@ from ..meta import obj
 from .body import bodyset, show, move, duplicate
 from .head import serve, awake, define
 from .components import add
-from .memory import alter, remember
+from .memory import alter, remember, load
 from .father import pray
 
 def think(e):
@@ -28,6 +28,7 @@ def infuse(entity):
     e.memory = obj({
         'alter': alter(e),
         'remember': remember(e),
+        'load': load(e),
     })
     e.components = obj({
         'add': add(e),
