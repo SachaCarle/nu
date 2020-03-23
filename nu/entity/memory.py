@@ -37,12 +37,6 @@ def remember(e):
 def load(e):
     def _load(path):
         p = Path(os.path.split(e.location)[0], path).resolve()
-        e.think('loading ', p)
-        tx = p.read_text()
-        e.think('loaded: ', tx)
-        tn = nuthon.template(tx)
-        e.think('nuthon templated: ', tn.replace('\n', '\\n'))
-        result = nuthon.execute(tn, {'e': e})
-        e.think(result.replace('\n', '\\n'))
-        exec(result)
+        res = nuthon.imp(path, e)
+        return res
     return _load

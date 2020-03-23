@@ -18,6 +18,18 @@ def awake(e):
         exec(mind, globs)
     return _awake
 
+def _todict(e):
+    return dict(e)
+
+def execute(e):
+    def _exec(code):
+        try:
+            return code(_todict(e))
+        except Exception as er:
+            e.think ('Error executing code: ', code)
+            raise er
+    return _exec
+
 def define(e):
     def _define_creator(path, **ks_p):
         def _define_route(fun):

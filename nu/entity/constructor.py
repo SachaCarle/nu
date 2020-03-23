@@ -2,10 +2,11 @@ import os
 from pathlib import Path
 from ..meta import obj
 from .body import bodyset, show, move, duplicate
-from .head import serve, awake, define
+from .head import serve, awake, define, execute
 from .components import add
 from .memory import alter, remember, load
 from .father import pray
+from .behavior import function
 
 def think(e):
     def _think(*args, **kwargs):
@@ -18,6 +19,7 @@ def infuse(entity):
     e.location = Path(os.getcwd(), '.entity').resolve()
     e.think = think(e)
     e.pray = pray(e)
+    e.awake = awake(e)
     e.move = move(e)
     e.body = obj({
         'file': Path(e.location, 'body.html'),
@@ -35,11 +37,14 @@ def infuse(entity):
         **e.components
     })
     e.head = obj({
+        'execute': execute(e),
         'define': define(e),
+        'serve': serve(e),
         'routes': {},
     })
-    e.serve = serve(e)
-    e.awake = awake(e)
+    e.bh = obj({
+        'fun': function(e),
+    })
     try:
         return e.memory.remember(e)
     except Exception as er:
