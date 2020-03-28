@@ -45,4 +45,4 @@ print( '?',
     Path('nu/components/src').resolve()
 )
 
-#subprocess.Popen(["python", 'build.nu.py'], cwd='nu/components/vue_components/src').wait()
+subprocess.Popen(["python", 'build.nu.py'], cwd='nu/components/vue_components/src').wait()

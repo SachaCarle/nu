@@ -5,6 +5,7 @@ from . import constructor
 
 def spirit(entityfile):
     ef = Path(os.getcwd(), entityfile)
+    os.chdir(os.path.split(os.path.split(ef)[0])[0])
     if ef.exists():
         jsontxt = ef.read_text()
         entity = json.loads(jsontxt)

@@ -15,8 +15,8 @@ def think(e):
 
 def infuse(entity):
     e = obj(entity)
-    e.http = 'http://localhost:5000/'
     e.location = Path(os.getcwd(), '.entity').resolve()
+    e.http = 'http://localhost:5000/'
     e.think = think(e)
     e.pray = pray(e)
     e.awake = awake(e)

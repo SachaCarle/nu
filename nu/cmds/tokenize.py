@@ -5,13 +5,13 @@ import sys, os, subprocess, json, nu, nujs
 def cmd(_, args, legacy=True, **kwargs):
     assert args.i
     assert args.o
-    print ("Creating analysing entity at " + args.o + '.nu')
-    tokenizer = scripts['js_tokenizer']
     code = Path(os.path.join(Path('.').resolve(), Path(args.i))).read_bytes()
     output = Path(os.path.join(Path('.').resolve(), Path(args.o + '.nu')));
+    print ("Creating analysing entity at " + str(output))
+    tokenizer = scripts['js_tokenizer']
     js = ExecuteJs(fd=tokenizer, stdin=code)
     subprocess.run(["python", "-m", "nu", "create", "-o", args.o])
-    codedatafile = Path(os.path.join(output, '.entity', 'entity.json')).resolve()
+    codedatafile = Path(output, '.entity', 'entity.json').resolve()
     entity = nu.entity.spirit(codedatafile)
     nu.components.copy('token-visual', entity)
     nu.components.copy('nu-call', entity)
