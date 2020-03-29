@@ -1,11 +1,12 @@
 <template>
 <a href="#">
-  Call me maybe
+  <slot/>
 </a>
 </template>
 
 <script>
 export default {
   name: 'nu-call',
+  props: ['call']
 }
 </script>

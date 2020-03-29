@@ -1,17 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <nu-call>Hello There</nu-call>
+    <token-visual :obj="data" :tokenizer="tokenizer" :vueapp="true"></token-visual>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TokenVisual from './token-visual.vue'
+import NuCall from './nu-call.vue'
+import tokenizer from './js_tokenizer.js'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      tokenizer,
+      data: [{type: 'symbol', value: 'hello', index:0},
+              {type: 'space', value: ' ', index:4},
+              {type: 'symbol', value: 'there', index:5}]
+    }
+  },
   components: {
-    HelloWorld
+    TokenVisual, NuCall
   }
 }
 </script>

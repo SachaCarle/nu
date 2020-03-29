@@ -19,6 +19,9 @@
 
     <!--Load your custom element-->
     <!-- $components -->
+    <script>
+        module = {}
+    </script>
     <script src="http://127.0.0.1:5000/components/token-visual.js"></script>
     <script src="http://127.0.0.1:5000/components/nu-call.js"></script>
     <script src="http://127.0.0.1:5000/components/js_tokenizer.js"></script>
@@ -28,16 +31,19 @@
 </head>
 
 <body>
-    <button onclick="killme()"> KILL </button>
+    <nu-call onclick="killme()">
+        KILL
+    </nu-call>
     <h1>$name</h1>
-    <nu-call></nu-call>
     <script>
         var tks = $analyze_tokens
     </script>
-    <token-visual ob="tks" tokenizer="tokenizer"></token-visual>
-    <p>
-        $analyze_tokens
-    </p>
+    <token-visual obj="tks" tokenizer=tokenizer></token-visual>
+    <!--
+        <p>
+            $analyze_tokens
+        </p>
+    -->
 </body>
 
 <script>
@@ -48,8 +54,7 @@
             console.log('Entity killed ?', r)
         })
     }
-    console.log("object to tokenize ?", tks)
-    console.log("tokenizer?", tokenizer)
+    console.log(window)
 </script>
 
 </html>
