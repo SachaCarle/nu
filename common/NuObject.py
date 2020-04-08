@@ -1,6 +1,12 @@
 import collections
 
 class NuObject(collections.MutableMapping):
+    def __call__(self, *args, **kwargs):
+        for k, v in kwargs.items():
+            self.sub_store[k] = v
+        if len(args) == 1:
+            return self.sub_store[args[0]]
+
     def __str__(self):
         return dict.__str__(self.store)
     def __repr__(self):
@@ -8,17 +14,18 @@ class NuObject(collections.MutableMapping):
 
     def __init__(self, *args, **kwargs):
         self.store = dict()
+        self.sub_store = dict()
         self.update(dict(*args, **kwargs))  # use the free update to set keys
 
     def __getattr__(self, key):
-        if key == "store":
+        if key in ("store", "sub_store"):
             return object.__getattribute__(self, key)
         if not (self.__keytransform__(key) in self.store.keys()):
             raise Exception('KeyNotFound', key)
         return self.store[self.__keytransform__(key)]
 
     def __setattr__(self, key, value):
-        if key == "store":
+        if key in ("store", "sub_store"):
             return object.__setattr__(self, key, value)
         self.store[self.__keytransform__(key)] = value
 

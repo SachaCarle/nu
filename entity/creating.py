@@ -4,16 +4,16 @@ from common import remkdir
 import os, json
 
 default_attrs = {
-    'head': 'mind.py'
+    'head': "me.think('default mind.. such waow!!')",
+    'state': 'abstract',
 }
 
 def load(name):
-    fp = Path(os.path.join(name, 'entity.json'))
+    fp = Path(name, '.entity', 'entity.json')
     if fp.exists():
         with fp.open('r') as f:
             return Entity(def_attrs=json.load(f))
-    raise Exception(ef, ": does not exists...")
+    raise Exception(fp, ": does not exists...")
 
 def create(name):
-    remkdir(name)
     return Entity(name, def_attrs=default_attrs)

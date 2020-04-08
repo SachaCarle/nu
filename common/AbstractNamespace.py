@@ -1,7 +1,12 @@
 import os
+from pathlib import Path
 
 class AbstractNamespace(object):
     def __call__(self, *args, **kwargs):
+        if args[0] == 'parent':
+            return object.__getattribute__(self, 'parent')
+        if args[0] == 'items':
+            return self(self('state')).items()
         if args[0] == 'abstract':
             return object.__getattribute__(self, 'datas')
         if args[0] == 'physical':
@@ -14,7 +19,7 @@ class AbstractNamespace(object):
             elif args[1] in ['physical', 'abstract', 'ari']:
                 old = self('state')
                 return AbstractNamespace.__init__(self, object.__getattribute__(self, 'name'),
-                    state=args[1], **{old: self(old)})
+                    state=args[1], **{old: self(old), 'parent': self('parent')})
                 object.__setattr__(self, 'state', 'physical')
         raise Exception('unknow call: ' + str(args) + "\nalso\t" + str(kwargs))
 
@@ -27,8 +32,9 @@ class AbstractNamespace(object):
                 print ('-->', key, value, subname)
             setattr(self, key, value)
 
-    def __init__(self, name, state='abstract', abstract=False, physical=False, ari=False):
+    def __init__(self, name, parent=None, state='abstract', abstract=False, physical=False, ari=False):
         object.__setattr__(self, 'name', name)
+        object.__setattr__(self, 'parent', parent)
         object.__setattr__(self, 'state', state)
         if self('state') == 'abstract':
             object.__setattr__(self, 'datas', dict() if not abstract else abstract)
@@ -44,7 +50,7 @@ class AbstractNamespace(object):
             if self('state') == 'abstract':
                 return object.__getattribute__(self, 'datas')[key]
             if self('state') == 'physical':
-                return object.__getattribute__(self, 'fs')[key]
+                return Path(self('physical')[key]).read_text()
 
     def __setattr__(self, key, value):
         if key.startswith('__'):
@@ -54,12 +60,12 @@ class AbstractNamespace(object):
                 object.__getattribute__(self, 'datas')[key] = value
             if self('state') == 'physical':
                 fs = self('physical')
-                if key in fs.keys():
-                    pass# open and re-write
-                else:
-                    pass# open and write
-                # DEBUG
-                fs[key] = value
+                print ('!!', self('parent'))
+                fs[key] = self('parent') / Path(key)
+                if fs[key].exists():
+                    os.remove(str(fs[key]))
+                with fs[key].open('w') as f:
+                    f.write(value)
 
     def __str__(self):
         if self('state') == 'abstract':
