@@ -1,8 +1,11 @@
-from common import NuObject
+from common import NuObject, AbstractNamespace
 import json, os
 from pathlib import Path
 
 class Entity(NuObject):
+    body = AbstractNamespace('body')
+    body.head = AbstractNamespace('head')
+
     def __init__(self, name=None, def_attrs={}):
         if name != None:
             def_attrs['name'] = name
