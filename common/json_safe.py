@@ -6,7 +6,7 @@ import json, entity
 
 def json_safe_dict(dd):
     if isinstance(dd, (entity.Entity,)):
-        return json.dumps(dd.name)
+        return "<entity>"
     if isinstance(dd, (str, Path, int)):
         return str(dd)
     if isinstance(dd, (list,)):

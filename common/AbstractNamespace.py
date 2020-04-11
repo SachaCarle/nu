@@ -3,6 +3,16 @@ from pathlib import Path
 
 class AbstractNamespace(object):
     def __call__(self, *args, **kwargs):
+        if args[0] == 'discover':
+            assert self('parent')
+            a = args[1]
+            rename = a
+            if len(args) >= 3:
+                rename = args[2]
+            fd = Path(self('parent'), a).resolve()
+            print ("_REGISTER_", fd, 'as', rename)
+            self('physical')[rename] = fd
+            return True
         if args[0] == 'parent':
             return object.__getattribute__(self, 'parent')
         if args[0] == 'items':

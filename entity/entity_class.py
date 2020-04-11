@@ -40,7 +40,7 @@ class Entity(NuObject):
                 safe = json_safe_dict(self.store)
                 if 'parent' in safe:
                     del safe['parent']
-                print (safe)
+                #print (safe)
                 json.dump(safe, f)
 
         @self.integrate
