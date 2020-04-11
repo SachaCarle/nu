@@ -65,7 +65,6 @@ class Entity(NuObject):
 
     def awake(self):
         old = os.getcwd()
-        print ('awakening:', old, self.name, self.head)
         body = Path(old, self.name)
         os.chdir(str(body))
         if self.state == "physical":
@@ -74,7 +73,6 @@ class Entity(NuObject):
             if mindfile.exists():
                 pass
             else:
-                print ('creating mind', mindfile.exists(), mindfile)
                 with mindfile.open('w') as f:
                     f.write("""me.think('hello world!!')""")
             with mindfile.open('r') as f:

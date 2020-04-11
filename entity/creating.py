@@ -1,5 +1,5 @@
 from pathlib import Path
-from .Entity import Entity
+from .entity_class import Entity
 from common import remkdir
 import os, json
 

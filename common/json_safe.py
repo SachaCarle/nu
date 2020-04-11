@@ -1,12 +1,11 @@
 from common import AbstractNamespace
 from pathlib import Path
 import json, entity
-from entity import Entity
 
 #Entity = None
 
 def json_safe_dict(dd):
-    if isinstance(dd, (Entity.Entity,)):
+    if isinstance(dd, (entity.Entity,)):
         return json.dumps(dd.name)
     if isinstance(dd, (str, Path, int)):
         return str(dd)
