@@ -23,8 +23,10 @@ class AbstractNamespace(object):
                 object.__setattr__(self, 'state', 'physical')
         raise Exception('unknow call: ' + str(args) + "\nalso\t" + str(kwargs))
 
-    def __remap__(self, d):
+    def __remap__(self, d, fromstate='abstract'):
         for key, value in d.items():
+            if fromstate == 'physical':
+                value = value.read_text()
             if isinstance(value, AbstractNamespace):
                 subname = object.__getattribute__(value, 'name')
                 print ('!!', key, value, subname)
@@ -40,8 +42,10 @@ class AbstractNamespace(object):
             object.__setattr__(self, 'datas', dict() if not abstract else abstract)
         elif self('state') == 'physical':
             object.__setattr__(self, 'fs', dict() if not physical else physical)
-            if not (abstract is False):
-                self.__remap__(abstract)
+        if not (abstract is False):
+            self.__remap__(abstract, 'abstract')
+        if not (physical is False):
+            self.__remap__(physical, 'physical')
 
     def __getattribute__(self, key):
         if key.startswith('__'):
@@ -60,7 +64,7 @@ class AbstractNamespace(object):
                 object.__getattribute__(self, 'datas')[key] = value
             if self('state') == 'physical':
                 fs = self('physical')
-                print ('!!', self('parent'))
+                #print ('!!', self('parent'))
                 fs[key] = self('parent') / Path(key)
                 if fs[key].exists():
                     os.remove(str(fs[key]))

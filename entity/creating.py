@@ -15,5 +15,9 @@ def load(name):
             return Entity(def_attrs=json.load(f))
     raise Exception(fp, ": does not exists...")
 
-def create(name):
-    return Entity(name, def_attrs=default_attrs)
+def create(name, **kwargs):
+    def_attr = {
+        **default_attrs,
+        **kwargs
+    }
+    return Entity(name, def_attrs=def_attr)

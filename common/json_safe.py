@@ -1,9 +1,17 @@
 from common import AbstractNamespace
 from pathlib import Path
+import json, entity
+from entity import Entity
+
+#Entity = None
 
 def json_safe_dict(dd):
-    if isinstance(dd, (str, Path)):
+    if isinstance(dd, (Entity.Entity,)):
+        return json.dumps(dd.name)
+    if isinstance(dd, (str, Path, int)):
         return str(dd)
+    if isinstance(dd, (list,)):
+        return json.dumps(dd)
     return {
         k: v if not isinstance(dd, (dict, AbstractNamespace))
             else json_safe_dict(v)
