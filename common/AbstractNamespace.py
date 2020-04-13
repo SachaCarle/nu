@@ -10,7 +10,7 @@ class AbstractNamespace(object):
             if len(args) >= 3:
                 rename = args[2]
             fd = Path(self('parent'), a).resolve()
-            print ("_REGISTER_", fd, 'as', rename)
+            #print ("_REGISTER_", fd, 'as', rename)
             self('physical')[rename] = fd
             return True
         if args[0] == 'parent':
@@ -30,8 +30,10 @@ class AbstractNamespace(object):
                 old = self('state')
                 return AbstractNamespace.__init__(self, object.__getattribute__(self, 'name'),
                     state=args[1], **{old: self(old), 'parent': self('parent')})
-                object.__setattr__(self, 'state', 'physical')
         raise Exception('unknow call: ' + str(args) + "\nalso\t" + str(kwargs))
+
+    def __iter__(self):
+        return iter(self(self('state')))
 
     def __remap__(self, d, fromstate='abstract'):
         for key, value in d.items():
@@ -64,7 +66,10 @@ class AbstractNamespace(object):
             if self('state') == 'abstract':
                 return object.__getattribute__(self, 'datas')[key]
             if self('state') == 'physical':
-                return Path(self('physical')[key]).read_text()
+                try:
+                    return Path(self('physical')[key]).read_text()
+                except Exception as e:
+                    raise Exception(f'Error: {Path(self("physical")[key])}')
 
     def __setattr__(self, key, value):
         if key.startswith('__'):
@@ -82,13 +87,15 @@ class AbstractNamespace(object):
                     f.write(value)
 
     def __str__(self):
+        name = {object.__getattribute__(self, 'name')}
         if self('state') == 'abstract':
-            return f"[{object.__getattribute__(self, 'name')}({self('state')}): {str(object.__getattribute__(self, 'datas'))}]"
+            return f"[{name}({self('state')}): {str(list(object.__getattribute__(self, 'datas').keys()))}]"
         elif self('state') == 'physical':
-            return f"[{object.__getattribute__(self, 'name')}({self('state')}): {str(list(object.__getattribute__(self, 'fs').keys()))}]"
+            return f"[{name}({self('state')}): {str(list(object.__getattribute__(self, 'fs').keys()))}]"
 
     def __repr__(self):
+        name = {object.__getattribute__(self, 'name')}
         if self('state') == 'abstract':
-            return f"[{object.__getattribute__(self, 'name')}({self('state')}): {str(list(object.__getattribute__(self, 'datas').keys()))}]"
+            return f"[{name}({self('state')}): {str(list(object.__getattribute__(self, 'datas').keys()))}]"
         elif self('state') == 'physical':
-            return f"[{object.__getattribute__(self, 'name')}({self('state')}): {str(list(object.__getattribute__(self, 'fs').keys()))}]"
+            return f"[{name}({self('state')}): {str(list(object.__getattribute__(self, 'fs').keys()))}]"

@@ -10,7 +10,7 @@ def remkdir(name):
         except Exception as e:
             raise e
     p.mkdir()
-    print ('created: ', p)
+    #print ('created: ', p)
 
 def touchdir(name):
     p = Path(name)
@@ -18,4 +18,4 @@ def touchdir(name):
         pass
     else:
         p.mkdir()
-        print ('created: ', p)
+        #print ('created: ', p)

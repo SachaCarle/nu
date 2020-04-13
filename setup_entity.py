@@ -13,7 +13,7 @@ setup(
     name='NuEntity',
     version='1.0.1',
     long_description=__doc__,
-    packages=['entity', 'common', 'synaps'],
+    packages=['entity', 'common', 'synaps', 'abstract'],
     data_files=df,
     include_package_data=True,
     zip_safe=False,

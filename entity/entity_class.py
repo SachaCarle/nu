@@ -23,7 +23,7 @@ class Entity(NuObject):
         if parent:
             self.parent = parent
 
-        if parent is None:
+        if parent is None or os.getcwd().endswith(parent.name):
             mind_location = Path(os.getcwd(), name, '.entity')
             body_location = Path(os.getcwd(), name)
         elif isinstance(parent, Entity):
@@ -32,6 +32,7 @@ class Entity(NuObject):
 
         @self.integrate
         def save(fun=None):
+            #print (body_location, mind_location)
             touchdir(body_location)
             touchdir(mind_location)
             if not (fun is None):
@@ -62,12 +63,20 @@ class Entity(NuObject):
             return Entity(name=sub_name, parent=self, def_attrs=dp)
 
 
+    def __repr__(self):
+        if "parent" in self:
+            return NuObject.__repr__(self, parent=f"<{self.parent.name}>")
+        else:
+            return NuObject.__repr__(self)
 
-    def awake(self):
-        old = os.getcwd()
-        body = Path(old, self.name)
-        os.chdir(str(body))
+    def awake(self, **kwargs):
         if self.state == "physical":
+            old = os.getcwd()
+            if 'parent' in self and not old.endswith(self.parent.name):
+                body = Path(old, self.parent.name, self.name)
+            else:
+                body = Path(old, self.name)
+            os.chdir(str(body))
             mind = Path(body, '.entity')
             mindfile = mind / self.head
             if mindfile.exists():
@@ -79,8 +88,9 @@ class Entity(NuObject):
                 code = mindfile.read_text()
         else:
             code = self.head
-        exec(code, {'me': self})
-        os.chdir(old)
+        exec(code, {'me': self, **kwargs})
+        if self.state == 'physical':
+            os.chdir(old)
 
     def think(self, *args):
         print (self.name + ':', *args)

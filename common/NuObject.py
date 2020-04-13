@@ -9,14 +9,16 @@ class NuObject(collections.MutableMapping):
 
     def __str__(self):
         return dict.__str__(self.store)
-    def __repr__(self):
-        return f"""<{dict.__repr__(self.store)}>"""
+    def __repr__(self, **kwargs):
+        return f"""<{dict.__repr__({**self.store, **kwargs})}>"""
 
     def __init__(self, *args, **kwargs):
         self.store = dict()
         self.sub_store = dict()
         self.update(dict(*args, **kwargs))  # use the free update to set keys
 
+    def __getitem__(self, key):
+        return getattr(self, key)
     def __getattr__(self, key):
         if key in ("store", "sub_store"):
             return object.__getattribute__(self, key)
@@ -24,6 +26,8 @@ class NuObject(collections.MutableMapping):
             raise Exception('KeyNotFound', key)
         return self.store[self.__keytransform__(key)]
 
+    def __setitem__(self, key, value):
+        return setattr(self, key, value)
     def __setattr__(self, key, value):
         if key in ("store", "sub_store"):
             return object.__setattr__(self, key, value)
