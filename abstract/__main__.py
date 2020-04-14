@@ -28,6 +28,7 @@ AbstractInterface(Cobj()),
 # CLASS
 
 AbstractInterface(AbstractInterface()),
+AbstractInterface(AbstractInterface(Cobj()))
 ]
 
 
@@ -54,6 +55,12 @@ _print (True, "___________________TEST___________________")
 for x in LS:
     with AbstractInterface.unseal(x):
         mode = x.__mode__
+        _type = x.__type__
+        _VALUE = x.__abstract__
+        if mode and mode() == 'ABSTRACT':
+            with AbstractInterface.unseal(_VALUE):
+                _VALUE_mode = _VALUE.__mode__
+
     _print(True, "\n\n!!\t\t", x, mode)
 
     def try_sealed():
@@ -83,9 +90,19 @@ for x in LS:
     assert try_sealed()
     if FIELDS in tests:
         _print (" - FIELDS ASSERT OF", x, " --> ", mode)
+        TRIIFER = False
         if mode:
             _print ('OEZOEK   -> ', mode())
-        if mode and mode() == "ABI_OBJECT":
+            if ( mode() == "ABSTRACT" and _type == AbstractInterface):
+                print (repr(x), mode(), _type)
+                print (
+                    _VALUE,
+                    _VALUE_mode
+                )
+                if _VALUE_mode and _VALUE_mode() in ["ABI_OBJECT", "ABSTRACT"]:
+                    input()
+                    TRIIFER = True
+        if mode and (mode() in ["ABI_OBJECT"] or TRIIFER) :
             x.field_name = "Abi_Object interface is working !!"
             _print (x.field_name)
             try:
@@ -98,20 +115,31 @@ for x in LS:
             else:
                 _print ("UNEXPECTED EXCEPTION?")
                 #assert False
+            try:
+                # testing ABI.do = ABI()
+                x.abi_hard_name = AbstractInterface(Cobj())
+                _print (x.abi_hard_name)
+            except AbstractException as identifier:
+                pass
+            else:
+                _print ("UNEXPECTED EXCEPTION?")
+                assert False
         else:
             try:
                 x.field_name = "LOLZ"
             except AbstractException as identifier:
                 pass
             else:
-                _print ("UNEXPECTED EXCEPTION", x)
-                assert False
+                _print ( "UNEXPECTED EXCEPTION", x)
+                with AbstractInterface.unseal(x):
+                    assert x.__type__ == AbstractInterface
             try:
                 _print (x.field_name)
             except AbstractException as identifier:
                 pass
             else:
-                _print ("UNEXPECTED EXCEPTION")
+                _print (True, "UNEXPECTED EXCEPTION", repr(x), _type)
+                input()
                 assert False
 
 
@@ -137,3 +165,5 @@ for x in LS:
         assert s == AbstractInterface.size(x)
 
     assert try_sealed()
+
+print ('FINISHED PROPERLY')

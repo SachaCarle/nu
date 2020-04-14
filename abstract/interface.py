@@ -123,6 +123,9 @@ class AbstractInterface(object):
         if mode and mode() == "ABI_OBJECT":
             value = object.__getattribute__(self, "__abstract__")
             return getattr(value, key)
+        if mode and mode() == "ABSTRACT":
+            value = object.__getattribute__(self, "__abstract__")
+            return getattr(value, key)
         raise AbstractException("__getattribute__ not defined", key)
     # --------------------------------------------------------------     .
 
@@ -134,9 +137,10 @@ class AbstractInterface(object):
     def __set_init__(self, this, key):
         raise AbstractException(f'__set_init__ UNDEFINED ==> \n{self} \n\tassigned to \n{this} \n\tat \n{key}')
     def  __setattr__(self, key, value):
-        #print (getframeinfo(currentframe()).lineno, "SETATTR", key)
+        #print (getframeinfo(currentframe()).lineno, "\tSETATTR\t", "\t", key)
         if object.__getattribute__(self, "__abstract_sealing__") == False:
             if key.startswith('__') and key.startswith('__'):
+                #print ("\tA\t")
                 return object.__setattr__(self, key, value)
         ABI_SET = False
         mode = object.__getattribute__(self, '__mode__')
@@ -144,23 +148,30 @@ class AbstractInterface(object):
             self_value = object.__getattribute__(self, "__abstract__")
             setattr(self_value, key, value)
             ABI_SET = True
+        if mode and mode() == "ABSTRACT":
+            self_value = object.__getattribute__(self, "__abstract__")
+            ab_mode = object.__getattribute__(self_value, '__mode__')
+            if ab_mode:
+                if ab_mode() in ['ABSTRACT', "ABI_OBJECT"]:
+                    setattr(self_value, key, value)
+                    ABI_SET = True
+                else:
+                    input()
+                    print ('dramatic exit')
+                    exit()
         if ABI_SET:
             if isinstance(value, AbstractInterface):
                 with AbstractInterface.unseal(value):
-                    if isinstance(value.__abstract__, AbstractInterface):
-                        print('\t', getframeinfo(currentframe()).lineno, "PAD",
-                            getattr(self_value, key)
-                            )
-                        print('\t', getframeinfo(currentframe()).lineno, "!!", value, type(value))
-                        print('\t', getframeinfo(currentframe()).lineno, "NN", value.__mode__)
-                        print('\t', getframeinfo(currentframe()).lineno, "from", self)
-                        print('\t', getframeinfo(currentframe()).lineno, "on", key)
-                        print('\t', getframeinfo(currentframe()).lineno, dir(value))
-                        print('\t', getframeinfo(currentframe()).lineno, value.__abstract__)
-                        input()
-                    else: return
-            else: return
-        raise AbstractException(str(ABI_SET)  + "-" + repr(self) + "__setattr__ not defined\t" + key  + "\t" + str(value))
+                    if value.__mode__ and value.__mode__() == "ABI_OBJECT":
+                        value.__set_init__(key, self)
+                        return #print ("\tB\t")
+                    elif isinstance(value.__abstract__, AbstractInterface):
+                        value.__set_init__(key, self)
+                        return #print ("\tC\t")
+                    else: return #print ("\tD\t")
+            elif mode: return #print ("\tE\t")
+            else: return #print ("\tF\t")
+        raise AbstractException(str(ABI_SET)  + "\n\t" + "-" + repr(self) + "__setattr__ not defined\t" + key  + "\t" + str(value))
     # --------------------------------------------------------------     =
 
 
