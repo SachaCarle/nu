@@ -64,6 +64,7 @@ for x in LS:
     _print(True, "\n\n!!\t\t", x, mode)
 
     def try_sealed():
+        _print (' - SEAL TEST')
         if SEADLED in tests:
             try:
                 _print (x)
@@ -100,7 +101,7 @@ for x in LS:
                     _VALUE_mode
                 )
                 if _VALUE_mode and _VALUE_mode() in ["ABI_OBJECT", "ABSTRACT"]:
-                    input()
+                    #input()
                     TRIIFER = True
         if mode and (mode() in ["ABI_OBJECT"] or TRIIFER) :
             x.field_name = "Abi_Object interface is working !!"
@@ -138,7 +139,7 @@ for x in LS:
             except AbstractException as identifier:
                 pass
             else:
-                _print (True, "UNEXPECTED EXCEPTION", repr(x), _type)
+                _print ("UNEXPECTED EXCEPTION", repr(x), _type)
                 input()
                 assert False
 

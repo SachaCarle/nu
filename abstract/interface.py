@@ -110,7 +110,8 @@ class AbstractInterface(object):
 #        with AbstractInterface.unseal(self):
 #            return self.__abstract__
     def __get__(self, this, kls):
-        #print (getframeinfo(currentframe()).lineno, "GET", self, this, kls)
+        print (getframeinfo(currentframe()).lineno, "GET", self, this, kls)
+        input()
         return self
     def  __getattribute__(self, key):
         #print (getframeinfo(currentframe()).lineno, 'GETATTRIBUTE', key)
@@ -223,6 +224,9 @@ class AbstractInterface(object):
 
 
     # --------------------------------------------------------------     ==
+    def __eq__(self, this):
+        with AbstractInterface.unseal(self):
+            return self.__abstract__ == this
     # --------------------------------------------------------------     ==
 
 
