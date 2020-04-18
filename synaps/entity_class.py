@@ -13,15 +13,13 @@ class Entity(dict):
         },
         'head': {
             'mind': f"""
-print ('lol')
-print (locals().keys())
 think('Awakened!')
 """,
         }
     }
     def __init__(self, synaps):
         self.synaps = synaps
-        self.name = 'UnknowEntity' if not 'name' in self.def_attrs else self.def_attrs['body_state']
+        self.name = 'UnknowEntity' if not 'name' in self.def_attrs else self.def_attrs['name']
         self.funs = {}
         body_location, head_location = self.synaps.getEntityLocation(self)
         self.body = AbstractNamespace('body', parent=body_location, state=self.def_attrs['body_state'])
@@ -51,6 +49,10 @@ think('Awakened!')
                 assert False
         if code == None:
             raise AbstractException("Unknow call: ", args, kwargs)
-        exec(code, {**self.funs})
+        exec(code, {self.name: self, **self.funs, **self})
 
+    def __str__(self):
+        return "<" + self.name + ': ' + dict.__str__(self) + ">"
+    def __repr__(self):
+        return "<" + self.name + ': ' + str(self.keys()) + ">"
 
