@@ -6,7 +6,7 @@ from functools import partial
 class Entity(dict):
     def_attrs = {
         'name': 'entity',
-        'body_state': 'abstract',
+        'body_state': 'physical',
         'head_state': 'abstract',
         'body': {
 
@@ -40,19 +40,15 @@ think('Awakened!')
         code = None
         if len(args) == 0 and len(kwargs) == 0:
             code = self.head.mind
-        elif len(args) == 1 and len(kwargs) == 0:
-            if isinstance(args[0], str):
-                assert False
-            else:
-                # get fun :)
-                fun = args[0]
-                self.funs[fun.__name__] = partial(fun, self)
-                return
+        elif (not isinstance(args[0], str)) and len(args) == 1 and len(kwargs) == 0:
+            fun = args[0]
+            self.funs[fun.__name__] = partial(fun, self)
+            return self.funs[fun.__name__] # FUN
         elif len(args) > 0:
             if isinstance(args[0], str):
-                assert False
-            else:
                 return self.funs[args[0]](*args[1:], **kwargs)
+            else:
+                assert False
         if code == None:
             raise AbstractException("Unknow call: ", args, kwargs)
         exec(code, {**self.funs})
