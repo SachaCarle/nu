@@ -51,8 +51,8 @@ think('Awakened!')
             raise AbstractException("Unknow call: ", args, kwargs)
         exec(code, {self.name: self, **self.funs, **self})
 
-    def __str__(self):
-        return "<" + self.name + ': ' + dict.__str__(self) + ">"
     def __repr__(self):
         return "<" + self.name + ': ' + str(self.keys()) + ">"
+    def __str__(self):
+        return "<" + self.name + ': ' + dict.__str__(self) + ">"
 
