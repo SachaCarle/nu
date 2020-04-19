@@ -17,7 +17,9 @@ think('Awakened!')
 """,
         }
     }
-    def __init__(self, synaps):
+    def __init__(self, synaps, *args, **kwargs):
+        self.def_attrs = self.def_attrs.copy()
+        self.def_attrs.update(kwargs)
         self.synaps = synaps
         self.name = 'UnknowEntity' if not 'name' in self.def_attrs else self.def_attrs['name']
         self.funs = {}
@@ -49,7 +51,11 @@ think('Awakened!')
                 assert False
         if code == None:
             raise AbstractException("Unknow call: ", args, kwargs)
-        exec(code, {self.name: self, **self.funs, **self})
+        try:
+            exec(code, {'_': self, **self.funs, **self})
+        except Exception as er:
+            print ("Entity Failed: " + str(self))
+            raise er
 
     def __repr__(self):
         return "<" + self.name + ': ' + str(self.keys()) + ">"
