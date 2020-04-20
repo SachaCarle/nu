@@ -3,14 +3,6 @@ from sys import stdout
 import traceback
 import web
 
-def card_(tx): return f"""
-<div class="card">
-  <div class="card-body">
-  {tx}
-  </div>
-</div>
-"""
-
 def create_root_entity(synaps):
     class RootEntity(Entity):
         def __init__(self, *s, **kws):
@@ -19,9 +11,6 @@ def create_root_entity(synaps):
 
         def start(root):
             @root
-            def think(self, *args):
-                stdout.write (self.name + ':' + ', '.join([str(_) for _ in args]) + '\n')
-                stdout.flush()
 
             @root
             def urlbar(self, path):

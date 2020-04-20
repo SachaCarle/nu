@@ -1,6 +1,7 @@
 from common import AbstractNamespace
 from abstract import AbstractException
 from functools import partial
+from sys import stdout
 
 
 class Entity(dict):
@@ -22,6 +23,7 @@ think('Awakened!')
         self.def_attrs.update(kwargs)
         self.synaps = synaps
         self.name = 'UnknowEntity' if not 'name' in self.def_attrs else self.def_attrs['name']
+        self.uri = "/" + self.__class__.__name__ + '/' + str(id(self))
         self.funs = {}
         body_location, head_location = self.synaps.getEntityLocation(self)
         self.body = AbstractNamespace('body', parent=body_location, state=self.def_attrs['body_state'])
@@ -30,6 +32,20 @@ think('Awakened!')
             setattr(self.body, k, v)
         for k, v in self.def_attrs['head'].items():
             setattr(self.head, k, v)
+        @self
+        def think(self, *args):
+            stdout.write (self.name + ':' + ', '.join([str(_) for _ in args]) + '\n')
+            stdout.flush()
+
+    def __getitem__(self, k, *args):
+        if isinstance(k, (tuple, list)):
+            return self.__getitem__(k[0], *k[1:])
+        kk = 'html_' + k
+        try:
+            r = getattr(self, kk)
+        except Exception as e:
+            return Entity.__getitem__(self, k, *args)
+        return r(*args)
 
     def __getattr__(self, key):
         if key in self.head:
@@ -48,7 +64,7 @@ think('Awakened!')
             if isinstance(args[0], str):
                 return self.funs[args[0]](*args[1:], **kwargs)
             else:
-                assert False
+                assert False, (args,  kwargs)
         if code == None:
             raise AbstractException("Unknow call: ", args, kwargs)
         try:
@@ -62,3 +78,11 @@ think('Awakened!')
     def __str__(self):
         return "<" + self.name + ': ' + dict.__str__(self) + ">"
 
+    def html_short(self):
+        return f"""<div><a style='font-size: large;' href={self.uri}>{self.name}<a><code>{
+            dict.__str__(self)
+        }</code></div>"""
+
+
+
+#!
