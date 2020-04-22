@@ -37,7 +37,7 @@ class Synaps(Entity):
         Entity.__init__(self, self, *a, **b)
         self.by_class_entities = {}
     def getEntityLocation(self, e):
-        return Path(os.getcwd(), e.name), Path(os.getcwd(), e.name, '.entity')
+        return Path(os.getcwd(), self.name, e.name), Path(os.getcwd(), self.name,e.name, '.entity')
     def start(self, *args, **kwargs):
         self.createHandler(*args, **kwargs)
         self.app = web.application((
