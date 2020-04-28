@@ -1,1 +1,0 @@
-def load_physical(location):

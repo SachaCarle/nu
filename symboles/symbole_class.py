@@ -2,8 +2,9 @@ from .composed_symbole_class import ComposedSymbole
 
 class Symbole(str):
     __symboles__ = {}
+    __composed__ = {}
 
-    def __new__(kls, s):
+    def __new__(kls, s, parent=None):
         if s in Symbole.__symboles__:
             return Symbole.__symboles__[s]
         else:

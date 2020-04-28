@@ -1,12 +1,14 @@
-from entity import load_physical
-import os, sys
+from entity import Entity
+from pathlib import Path
 
-primal_location = os.path.join(os.path.split(__file__)[0], 'Primal')
+@Entity()
+def lol(*args, **kwargs):
+    print ('Hello World, ', args, kwargs)
 
-print (primal_location)
+e = Entity(
+    mind = (Path('../comon.py'), Path('../head.py')),
+)
 
-primal = load_physical(primal_location)
 
-
-
+print (lol)
 #!
