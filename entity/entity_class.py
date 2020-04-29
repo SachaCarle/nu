@@ -8,3 +8,5 @@ class Entity:
         self.__mind__ = self.__class__.Mind(self, body)
     def __call__(self, *args, **kwargs):
         return self.__mind__(*args, **kwargs)
+    def __getattr__(self, key):
+        return self.__mind__[key]

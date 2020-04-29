@@ -1,14 +1,23 @@
 from entity import Entity
 from pathlib import Path
 
-@Entity()
-def lol(*args, **kwargs):
-    print ('Hello World, ', args, kwargs)
-
-e = Entity(
-    mind = (Path('../comon.py'), Path('../head.py')),
-)
+@Entity(mind=f"""
+print ('What that ?')
+""")
+def lol(self, this):
+    print ('Hello World, ', this)
 
 
-print (lol)
+
+e = Entity(mind = Path('common.py'))
+e.think('lolz')
+
+@Entity(mind = Path('common.py'))
+def exemple(self, this):
+    self.me.think('Lolz')
+
+
+e = Entity(mind = Path('common.py'), main = Path('main.py'))
+e('main')
+
 #!
