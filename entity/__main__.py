@@ -1,23 +1,23 @@
 from entity import Entity
 from pathlib import Path
+import sys, os, argparse
 
-@Entity(mind=f"""
-print ('What that ?')
-""")
-def lol(self, this):
-    print ('Hello World, ', this)
+parser = argparse.ArgumentParser(description='Awaken on or more Entity.')
+parser.add_argument('ets', metavar='E', type=str, nargs='+',
+                    help='Folder containing an Entity.')
 
+res = parser.parse_args(sys.argv)
 
+from .body_scan import fs_scan
 
-e = Entity(mind = Path('common.py'))
-e.think('lolz')
+for k in res.ets:
+    if k != __file__:
+        print ("Awekening: ", k)
+        fs = fs_scan(k)
+        e = Entity(
+            **fs
+        )
 
-@Entity(mind = Path('common.py'))
-def exemple(self, this):
-    self.me.think('Lolz')
-
-
-e = Entity(mind = Path('common.py'), main = Path('main.py'))
-e('main')
+# LOAD AN ENTITY BY FILE SYSTEM !!
 
 #!

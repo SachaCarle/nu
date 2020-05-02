@@ -25,5 +25,8 @@ class Mind(dict):
     def __init__(self, entity, body):
         self.body = body
         self.me = entity
+        for k in self.body.keys():
+            if k.startswith('_') and k.endswith('_'):
+                self(k)
         if 'mind' in self.body.keys():
             self('mind')
