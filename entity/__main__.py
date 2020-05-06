@@ -12,6 +12,7 @@ from .body_scan import fs_scan
 
 for k in res.ets:
     if k != __file__:
+        k = Path(k).resolve()
         print ("Awekening: ", k)
         fs = fs_scan(k)
         e = Entity(

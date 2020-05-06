@@ -6,11 +6,12 @@ class ___:
     def __delattr__(self, key):
         pass
 class Mind(dict):
+    MIND_KEY = 'mind'
     def __call__(self, *args, **kwargs):
         if len(args) == 1 and isinstance(args[0], str):
             code = self.body[args[0]]
             exec(code, {
-                'mind': self, **self, **kwargs
+                self.MIND_KEY: self, **self, **kwargs
             })
             return self.me
         elif len(args) == 1 and not isinstance(args[0], (int, dict, tuple, list)):
@@ -28,5 +29,5 @@ class Mind(dict):
         for k in self.body.keys():
             if k.startswith('_') and k.endswith('_'):
                 self(k)
-        if 'mind' in self.body.keys():
-            self('mind')
+        if self.MIND_KEY in self.body.keys():
+            self(self.MIND_KEY)

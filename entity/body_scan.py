@@ -8,7 +8,6 @@ def fs_scan(path):
 
     } # BODY DATA
     fs = listdir(path)
-    print (fs)
     if '.entity' in fs:
         mind_path = Path(path, '.entity')
         mind_fs = listdir(mind_path)
@@ -20,8 +19,8 @@ def fs_scan(path):
                 bd['_' + k.replace('.py', '_')] = mfpath
             else:
                 print ('ignored: ', mfpath)
-        for k in fs:
-            mfpath = Path(path, k)
-            if isfile(mfpath) and k.endswith('.py'):
-                bd[k.replace('.py', '')] = mfpath
-        return bd
+    for k in fs:
+        mfpath = Path(path, k)
+        if isfile(mfpath) and k.endswith('.py'):
+            bd[k.replace('.py', '')] = mfpath
+    return bd
