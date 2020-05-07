@@ -25,6 +25,7 @@ MIND: {' '.join(self.__mind__.keys())}""")
                         r = self.__mind__[s[1:]]
                         print ('fun:', r)
                         rs = [r(*rs)]
+                        r = rs
                     else:
                         r = self.__mind__[s]
                     rs.append(r)
