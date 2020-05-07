@@ -1,10 +1,3 @@
-class ___:
-    def __getattribute__(self, key):
-        pass
-    def __setattr__(self, key, value):
-        pass
-    def __delattr__(self, key):
-        pass
 class Mind(dict):
     MIND_KEY = 'mind'
     def __call__(self, *args, **kwargs):
