@@ -6,11 +6,19 @@ class Entity:
     Body = Body
     def __init__(self, **body_data):
         body = self.__class__.Body(self, body_data)
-        self.__mind__ = self.__class__.Mind(self, body)
+        self.__class__.Mind(self, body)
     def __call__(self, *args, **kwargs):
         return self.__mind__(*args, **kwargs)
     def __getattr__(self, key):
-        return self.__mind__[key]
+        assert key != '__mind__', repr(self) + " has no __mind__"
+        try:
+            return self.__mind__[key]
+        except RecursionError:
+            print ('Recursion error when trying to access ' + str(key) + ' on ' + repr(self))
+            return None
+        except Exception as err:
+            print (repr(err) + ' when trying to access ' + str(key) + ' on ' + repr(self))
+            return None
     def __gt__(self, event_key):
         if isinstance(event_key, str):
             dispatcher.send(event_key, self, self)

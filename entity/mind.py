@@ -9,7 +9,7 @@ class Mind(dict):
             return self.me
         elif len(args) == 1 and not isinstance(args[0], (int, dict, tuple, list)):
             fun = args[0]
-            res = fun(self, fun)
+            res = fun(self.me)
             if res != None:
                 self[fun.__name__] = res
             return self.me
@@ -19,6 +19,7 @@ class Mind(dict):
     def __init__(self, entity, body):
         self.body = body
         self.me = entity
+        entity.__mind__ = self
         for k in self.body.keys():
             if k.startswith('_') and k.endswith('_'):
                 self(k)

@@ -1,43 +1,16 @@
-from symboles import Symbole
+from symboles import SymboleEntity
 
-sym = Symbole('sym')
-sub = Symbole('sub')
-ter = Symbole('ter')
-quart = Symbole('quart')
+class Exemple:
+    sym = SymboleEntity()
 
-print (sym)
-print (sym.sub)
-print (sym.ter)
-print (sym.sub.ter)
-print (sym.sub.ter.quart)
+ex = Exemple()
 
+ex.sub = SymboleEntity()
 
-print (sym.sym)
-print (quart.sym)
-print (ter.sym)
-
-unknow = ter.sub
-print (unknow)
-print (unknow.sym)
-
-
-class Ob:
-    why = quart
-    pass
-
-o = Ob()
-o.what = sym
-
-print ("!", o.what)
-print ("!", o.what.sub)
-
-print ("!", o.why)
-print ("!", o.why.sub)
+print (ex)
+print (ex.sym)
 
 
 
 
-
-
-
-print ()
+#!

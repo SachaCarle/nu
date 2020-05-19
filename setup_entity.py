@@ -13,9 +13,9 @@ setup(
     name='NuEntity',
     version='1.0.1',
     long_description=__doc__,
-    packages=['entity', 'common', 'synaps', 'abstract'],
+    packages=['entity', 'common', 'synaps', 'abstract', 'symboles'],
     data_files=df,
     include_package_data=True,
     zip_safe=False,
     install_requires=['PyDispatcher']
-)
+)   

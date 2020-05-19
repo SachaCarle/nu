@@ -5,7 +5,7 @@ from os.path import isfile
 
 def fs_scan(path):
     bd = {
-
+        'body_path': str(Path(path).resolve().absolute())
     } # BODY DATA
     fs = listdir(path)
     if '.entity' in fs:

@@ -1,6 +1,11 @@
 from .entity_class import Entity
 
 class Controller(Entity):
+    def __call__(self, *args, **kwargs):
+        if len(args) == 0 and len(kwargs) == 0:
+            return self.console()
+        else:
+            return Entity.__call__(self, *args, **kwargs)
     def ask(self): return input("$> ")
     def console(self):
         while True:

@@ -1,1 +1,1 @@
-from .symbole_class import Symbole
+from .entity_symbole import SymboleEntity
