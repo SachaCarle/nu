@@ -1,7 +1,7 @@
 from . import Mind, Body
 from pydispatch import dispatcher
 
-class Entity:
+class Entity(dict):
     Mind = Mind
     Body = Body
     def __init__(self, **body_data):
