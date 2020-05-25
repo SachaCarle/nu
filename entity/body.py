@@ -22,3 +22,9 @@ class Body(dict):
         body_data = { k: v.resolve().absolute() if isinstance(v, Path) else v
             for k, v in body_data.items()}
         dict.__init__(self, body_data)
+    def __setattr__(self, key, value):
+        assert key.startswith('__') and key.endswith('__'), str(key) + " Is not a valid key for a Body"
+        return object.__setattr__(self, key, value)
+    def __getattr__(self, key):
+        assert key.startswith('__') and key.endswith('__'), str(key) + " Is not a valid key for a Body"
+        return object.__getattribute__(self, key)
