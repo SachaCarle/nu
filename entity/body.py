@@ -10,6 +10,7 @@ class Body(dict):
     def __setitem__(self, key, value):
         if isinstance(value, Path):
             value = value.resolve().absolute()
+            return
         # No override ?!
         # / No override file
         if key in self:
