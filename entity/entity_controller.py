@@ -14,11 +14,11 @@ class Controller(Entity):
                 break
             else:
                 self.exec(command)
-    def exec(self, s):
+    def exec(self, s): # CHANGE self.__mind__ to self FOR bash artifacts
             if s == 'help':
                 print (f"""\t{repr(self)}:
 MIND: {' '.join(self.__mind__.keys())}""")
-            elif s in "           \t \t  \t  \t\n\n\n\t\n":
+            elif s in "           \t\t\t\t\t\n  \n\n":
                 pass
             else:
                 rs = []

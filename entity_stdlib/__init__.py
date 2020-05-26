@@ -11,6 +11,7 @@ for f in os.listdir(STDLIB_PATH):
         scripts[f.replace('.py', '')] = Path(STDLIB_PATH, f)
 
 
+
 all = [
     'STDLIB_PATH', 'scripts'
 ]
