@@ -34,7 +34,7 @@ class Mind(dict):
     def __init__(self, entity, body):
         object.__setattr__(self, 'me', entity)
         self.body = body
-        entity.__mind__ = self
+        entity.__mind__ = self # JUST REBOUND SOME FUNCTION ?
         for k in self.body.keys():
             if k.startswith('_') and k.endswith('_'):
                 self(k)
