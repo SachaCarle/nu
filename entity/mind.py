@@ -55,6 +55,7 @@ class Mind(dict):
             elif key in self.entity: return True
             elif key in self.entity.__mind__: return True
             elif key in self.builtins: return True
+            # elif key in __module__ ???
             return False
 
         def __getitem__(self, key):
@@ -64,4 +65,5 @@ class Mind(dict):
             elif key in self.entity: return self.entity[key]
             elif key in self.entity.__mind__: return self.entity.__mind__[key]
             elif key in self.builtins: return self.builtins[key]
+            # elif key in __module__ ???
             else: return key
