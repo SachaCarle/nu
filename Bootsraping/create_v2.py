@@ -7,8 +7,52 @@ def mod(*args):
     print (*args)
 
 
-from scope_instance_class import ScopeInstance
+from nu_entity import ScopeInstance, EntityInstance
 
+e = EntityInstance(any='None')
+
+print (e.__dict__.keys())
+
+
+e.__exec__(f"""
+
+print ('lol')
+
+print (type(globals()))
+
+print (any)
+
+def exemple(obj):
+    assert isinstance(obj, bool)
+    return obj
+
+exemple = True
+
+print (exemple)
+
+
+class NUSYSTEM:
+    pass
+
+print (home)
+print (NUSYSTEM)
+NUSYSTEM.__exec__(f"print(home)")
+
+import os
+
+os.chdir('D://synaps//')
+
+print(os.getcwd())
+
+
+
+
+
+
+
+""")
+
+exit()
 exec("""
 
 print (repr(symbole))

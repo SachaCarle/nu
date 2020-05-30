@@ -1,3 +1,6 @@
+from pathlib import Path
+
+
 class CallInstance(list):
     def __repr__(self):
         return f"<Call {self}>"
@@ -32,10 +35,17 @@ class SymboleInstance(str):
     def __call__(self, *args, **kwargs):
         return ExpressionInstance(self, CallInstance(*args, **kwargs))
 
+class EntityInstance:
+    def __init__(self, *args, **kwargs):
+        self.__dict__ = ScopeInstance(**kwargs)
+    def __exec__(self, code):
+        exec(code, self.__dict__)
+
 class ScopeInstance(dict):
         def __init__(self, **kwargs):
             dict.__init__(self)
             dict.__setitem__(self, '__builtins__', __builtins__)
+            self.__validators__ = {}
             self.update(kwargs)
 
         def __contains__(self, key):
@@ -51,10 +61,31 @@ class ScopeInstance(dict):
             # elif key in __module__ ???
             else: return SymboleInstance(key)
 
+        def __fs_scan__(self, d, kls):
+            assert d.exists(), "Entity " + str(d) + ' does not exists'
+            body = {
+                'home': d
+            }
+            return body
+
         def __setitem__(self, key, value):
-            raise Exception('Unable to set symbole: ', key)
-
-
+            if hasattr(value, '__name__'):
+                if isinstance(value, type):
+                    d = Path(key).resolve().absolute()
+                    body = self.__fs_scan__(d, value)
+                    dict.__setitem__(self, key, EntityInstance(value, **body))
+                if hasattr(value, '__call__'):
+                    assert not key in self.__validators__.keys(), 'Validator already defined: ' + key
+                    self.__validators__[key] = value
+            else:
+                if key in self.__validators__.keys():
+                    res = self.__validators__[key](value)
+                    if res is None:
+                        raise Exception('Unable to set symbole: ', key)
+                    else:
+                        dict.__setitem__(self, key, res)
+                        return
+                raise Exception('Unable to set symbole: ', key, ' no validator defined')
 
 
             #!

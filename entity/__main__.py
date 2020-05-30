@@ -5,7 +5,6 @@ import sys, os, argparse
 parser = argparse.ArgumentParser(description='Awaken on or more Entity.')
 parser.add_argument('ets', metavar='E', type=str, nargs='+',
                     help='Folder containing an Entity.')
-
 res = parser.parse_args(sys.argv)
 
 from .body_scan import fs_scan
