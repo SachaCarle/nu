@@ -38,12 +38,6 @@ print (home)
 print (NUSYSTEM)
 NUSYSTEM.__exec__(f"print(home)")
 
-import os
-
-os.chdir('D://synaps//')
-
-print(os.getcwd())
-
 
 
 
