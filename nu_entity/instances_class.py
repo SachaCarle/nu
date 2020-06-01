@@ -63,9 +63,9 @@ class ScopeInstance(dict):
         def __fs_scan__(self, d, kls, FIRST=True):
             body = {}
             if FIRST:
-                if 'ENTITY_PATH' in kls.__dict__.keys():
+                if 'ENTITY_PATH' in kls.__dict__:
                     d = Path(kls.ENTITY_PATH).resolve().absolute()
-                if 'SHADOW_PATH' in kls.__dict__.keys():
+                if 'SHADOW_PATH' in kls.__dict__:
                     shadow_body = self.__fs_scan__(Path(kls.SHADOW_PATH).resolve().absolute(), type(None))
                     body = merge(body, shadow_body)
             assert d.exists(), "Entity " + str(d) + ' does not exists'
@@ -81,8 +81,8 @@ class ScopeInstance(dict):
                             body['__entity__'] = merge(res, body['__entity__'])
                         else:
                             body['__entity__'] = res
-                    elif not l.startswith('.'):
-                        res = self.__fs_scan__(Path(d, l), kls, FIRST=False)
+                    elif not l.startswith('.') and not ('-' in l):
+                        res = self.__fs_scan__(Path(d, l), type(None), FIRST=False)
                         if '__' + str(l) in body.keys():
                             body['__' + str(l)] = merge(res, body['__' + str(l)])
                         else:
@@ -98,6 +98,12 @@ class ScopeInstance(dict):
                     d = Path(key).resolve().absolute()
                     if 'NO_ENTITY' in value.__dict__ and value.NO_ENTITY == True:
                         dict.__setitem__(self, key, value)
+                    elif 'ENTITY_DATA' in value.__dict__:
+                        if 'SHADOW_PATH' in value.__dict__:
+                            shadow_body = self.__fs_scan__(Path(value.SHADOW_PATH).resolve().absolute(), type(None))
+                            dict.__setitem__(self, key, EntityInstance(value, **merge(value.ENTITY_DATA, shadow_body)))
+                        else:
+                            dict.__setitem__(self, key, EntityInstance(value, **value.ENTITY_DATA))
                     else:
                         body = self.__fs_scan__(d, value)
                         dict.__setitem__(self, key, EntityInstance(value, **body))
@@ -135,6 +141,8 @@ class EntityInstance:
             def __init__(self, scope, **kwargs):
                 self.__scope__ = scope
                 super().__init__(**kwargs)
+                ps = super().keys()
+                sc = self.__scope__.keys()
             def __contains__(self, key):
                 if super().__contains__(key): return True
                 else: return self.__scope__.__contains__(key)
@@ -146,10 +154,10 @@ class EntityInstance:
                 else: return self.__scope__.__setitem__(key, value)
     def __init__(self, *args, **kwargs):
         self.__dict__ = self.__class__.EntityScopeInstance(self, **kwargs)
-        if '__entity__' in self.__dict__.keys():
+        if '__entity__' in self.__dict__:
             orders = sorted(self.__dict__['__entity__'].keys())
             name = "\t"
-            if '__home__' in self.__dict__.keys():
+            if '__home__' in self.__dict__:
                 name = os.path.split(str(self.__home__))[-1]
             for k in orders:
                 if k.startswith('__'): continue
