@@ -1,4 +1,5 @@
 from pathlib import Path
+from inspect import ismodule
 import os
 
 
@@ -36,18 +37,6 @@ class SymboleInstance(str):
     def __call__(self, *args, **kwargs):
         return ExpressionInstance(self, CallInstance(*args, **kwargs))
 
-class EntityInstance:
-    def __init__(self, *args, **kwargs):
-        self.__dict__ = ScopeInstance(**kwargs)
-    def __exec__(self, code):
-        exec(code, self.__dict__)
-    def __call__(self, *args, **kwargs):
-        if len(args) == 1 and len(kwargs) == 0: # FUNCTION
-            fun = args[0]
-            assert not fun.__name__ in self.__dict__, f"Function {fun.__name__} already defined in {repr(self)}"
-            self.__dict__[fun.__name__] = fun
-        else:
-            raise Exception('Unknow call args: ', (args, kwargs))
 
 class ScopeInstance(dict):
         def __init__(self, **kwargs):
@@ -71,35 +60,99 @@ class ScopeInstance(dict):
 
         def __fs_scan__(self, d, kls):
             assert d.exists(), "Entity " + str(d) + ' does not exists'
+            assert d.is_dir(), "Can't scan " + str(d) + ", it's not a folder"
             body = {
-                'home': d
+                '__home__': d
             }
             for l in os.listdir(d):
-                if l.startswith('__') or l.endswith('__'): continue
+                if l.startswith('__') or l.endswith('__'):
+                    continue
                 elif os.path.isdir(Path(d, l)):
-                    body['__' + str(l)] = lambda: self.__fs_scan__(Path(d, l), kls)
+                    if l == '.entity':
+                        body['__entity__'] = self.__fs_scan__(Path(d, l), kls)
+                    elif not l.startswith('.'):
+                        body['__' + str(l)] = self.__fs_scan__(Path(d, l), kls)
                 else:
                     body[l.replace('.', '_')] = Path(d, l).resolve().absolute()
             return body
 
         def __setitem__(self, key, value):
+            #print ("SET\t\t", key, value, "\t\t", hasattr(value, '__name__'))
             if hasattr(value, '__name__'):
                 if isinstance(value, type): # Awake fs-entity
                     d = Path(key).resolve().absolute()
-                    body = self.__fs_scan__(d, value)
-                    dict.__setitem__(self, key, EntityInstance(value, **body))
-                if hasattr(value, '__call__'): # Add a validator
-                    assert not key in self.__validators__.keys(), 'Validator already defined: ' + key
+                    if 'NO_ENTITY' in value.__dict__ and value.NO_ENTITY == True:
+                        dict.__setitem__(self, key, value)
+                    else:
+                        body = self.__fs_scan__(d, value)
+                        dict.__setitem__(self, key, EntityInstance(value, **body))
+                elif not key in self.__validators__.keys() and hasattr(value, '__call__'): # Add a validator
                     self.__validators__[key] = value
+                elif ismodule(value):
+                    dict.__setitem__(self, key, value)
+                elif key in self.__validators__.keys(): # use validator
+                    test = self.__validators__[key](value)
+                    if not (test is None):
+                        dict.__setitem__(self, key, test)
+                else:
+                        print ('Unknow: ', key, type(value))
+                        exit()
             else:
                 if key in self.__validators__.keys():
                     res = self.__validators__[key](value)
                     if res is None:
-                        raise Exception('Unable to set symbole: ', key)
+                        print ('Unable to set symbole: ', key)
+                        exit()
                     else:
                         dict.__setitem__(self, key, res)
                         return
-                raise Exception('Unable to set symbole: ', key, ' no validator defined')
+                print ('Unable to set symbole: ', key, ' no validator defined')
+                exit()
 
 
+class EntityInstance:
+    class EntityScopeInstance(ScopeInstance):
+        def __init__(self, entity, **kwargs):
+                self.__entity__ = entity
+                super().__init__(**kwargs)
+                dict.__setitem__(self, 'exec', self.__entity__)
+        class KwargEntityScopeInstance(ScopeInstance):
+            def __init__(self, scope, **kwargs):
+                self.__scope__ = scope
+                super().__init__(**kwargs)
+            def __contains__(self, key):
+                if super().__contains__(key): return True
+                else: return self.__scope__.__contains__(key)
+            def __getitem__(self, key):
+                if super().__contains__(key): return super().__getitem__(key)
+                else: return self.__scope__.__getitem__(key)
+            def __setitem__(self, key, value):
+                if super().__contains__(key): return super().__setitem__(key, value)
+                else: return self.__scope__.__setitem__(key, value)
+    def __init__(self, *args, **kwargs):
+        self.__dict__ = self.__class__.EntityScopeInstance(self, **kwargs)
+        if '__entity__' in self.__dict__.keys():
+            orders = sorted(self.__dict__['__entity__'].keys())
+            for k in orders:
+                if k.startswith('__'): continue
+                if k.endswith('_py'):
+                    print ('\t\t', k)
+                    self.__exec__(self.__entity__[k].read_text())
+
+    def __exec__(self, code, **kwargs):
+        if len(kwargs.keys()) > 0:
+            exec(code, self.__dict__.KwargEntityScopeInstance(self.__dict__, **kwargs))
+        else:
+            exec(code, self.__dict__)
+    def __call__(self, *args, **kwargs):
+        if (not isinstance(args[0], Path)) and len(args) == 1 and len(kwargs) == 0: # FUNCTION decoration
+            fun = args[0]
+            assert not fun.__name__ in self.__dict__, f"Function {fun.__name__} already defined in {repr(self)}"
+            self.__dict__[fun.__name__] = fun
+            return
+        for arg in args:
+            if isinstance(arg, Path):
+                self.__exec__(arg.read_text(), **kwargs)
+            else:
+                raise Exception('Unknow call args: ', (args, kwargs))
             #!
