@@ -47,16 +47,17 @@ class ScopeInstance(dict):
             self.__validators__ = {}
             self.update(kwargs)
 
-        def __contains__(self, key):
+        def __contains__(self, key, no_builtins=False):
             if super().__contains__(key): return True
-            elif key in self['__builtins__']: return True
+            elif key in self['__builtins__'] and not no_builtins: return True
             # elif key in __module__ ???
             return False
 
         def __getitem__(self, key):
             if super().__contains__(key):
                 return super().__getitem__(key)
-            elif key in self['__builtins__']: return dict.__getitem__(self, '__builtins__')[key]
+            elif key in self['__builtins__']:
+                return dict.__getitem__(self, '__builtins__')[key]
             # elif key in __module__ ???
             else: return SymboleInstance(key)
 
@@ -141,16 +142,16 @@ class EntityInstance:
             def __init__(self, scope, **kwargs):
                 self.__scope__ = scope
                 super().__init__(**kwargs)
-                ps = super().keys()
-                sc = self.__scope__.keys()
             def __contains__(self, key):
-                if super().__contains__(key): return True
+                if super().__contains__(key, no_builtins=True): return True
                 else: return self.__scope__.__contains__(key)
             def __getitem__(self, key):
-                if super().__contains__(key): return super().__getitem__(key)
-                else: return self.__scope__.__getitem__(key)
+                if super().__contains__(key, no_builtins=True):
+                    return super().__getitem__(key)
+                else:
+                    return self.__scope__.__getitem__(key)
             def __setitem__(self, key, value):
-                if super().__contains__(key): return super().__setitem__(key, value)
+                if super().__contains__(key, no_builtins=True): return super().__setitem__(key, value)
                 else: return self.__scope__.__setitem__(key, value)
     def __init__(self, *args, **kwargs):
         self.__dict__ = self.__class__.EntityScopeInstance(self, **kwargs)
@@ -166,10 +167,24 @@ class EntityInstance:
                     self.__exec__(self.__entity__[k].read_text())
 
     def __exec__(self, code, **kwargs):
-        if len(kwargs.keys()) > 0:
-            exec(code, self.__dict__.KwargEntityScopeInstance(self.__dict__, **kwargs))
-        else:
-            exec(code, self.__dict__)
+        try:
+            if len(kwargs.keys()) > 0:
+                exec(code, self.__dict__.KwargEntityScopeInstance(self.__dict__, **kwargs))
+            else:
+                exec(code, self.__dict__)
+        except Exception as er:
+            print ('Raised when executing code: \n', code)
+            print (er)
+            # ERROR HHANDLING
+            if False:
+                r = input('?: ')
+                if 'raise' in r:
+                    raise er
+                elif 'exit' in r:
+                    exit()
+            else:
+                raise er
+            # ERROR HHANDLING
     def __call__(self, *args, **kwargs):
         if (not isinstance(args[0], Path)) and len(args) == 1 and len(kwargs) == 0: # FUNCTION decoration
             fun = args[0]
