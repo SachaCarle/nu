@@ -29,6 +29,8 @@ def dict_chain_get(d, chain):
 
 def dict_chain_set(d, chain, value):
     for k in chain[:-1]:
+        if not k in d.keys():
+            d[k] = {}
         d = d[k]
     d[chain[-1]] = value
 
