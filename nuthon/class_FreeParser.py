@@ -1,0 +1,2 @@
+class FreeParser:
+    pass
