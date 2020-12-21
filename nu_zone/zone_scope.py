@@ -1,0 +1,2 @@
+class ZoneScope(dict):
+    pass
