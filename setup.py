@@ -10,12 +10,12 @@ df = [
     ]
 
 setup(
-    name='NuEntity',
-    version='1.0.1',
+    name='nu',
+    version='1.1.9',
     long_description=__doc__,
-    packages=['nu_entity'],
+    packages=['nuthon', 'lithos', 'synaps'],
     data_files=df,
     include_package_data=True,
     zip_safe=False,
-    install_requires=['PyDispatcher']
+    install_requires=[]
 )
