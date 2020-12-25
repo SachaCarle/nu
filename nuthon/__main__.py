@@ -1,4 +1,3 @@
-from pathlib import Path
 from . import Scope
 import os
 
@@ -43,6 +42,7 @@ console = InteractiveConsole(global_scope, "<nuthon-console>")
 # CLOSE MAIN_0
 
 # OPEN INTERPRETER
+from pathlib import Path
 if isinstance(arg_res.input, str):
     f = Path(arg_res.input).resolve()
     assert f.exists()
